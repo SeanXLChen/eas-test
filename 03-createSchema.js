@@ -30,7 +30,7 @@ const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 schemaRegistry.connect(signer);
 
 // if error, check if schema is already registered
-const schema = 'uint256 eventId, uint8 voteIndex, uint8 voteValue, uint256 timetamp';
+const schema = 'uint256 eventId, uint8 voteIndex, uint8 voteValue, uint256 timeStamp';
 // const resolverAddress = '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0'; // Sepolia 0.26
 const resolverAddress = ZERO_ADDRESS;
 const revocable = false;
@@ -42,5 +42,8 @@ const transaction = await schemaRegistry.register({
 });
 
 // Optional: Wait for transaction to be validated
-await transaction.wait();
+const receipt = await transaction.wait();
 console.log('Transaction receipt:', receipt);
+
+// // only for debugging, sensitive data
+// console.log('\n', transaction);
