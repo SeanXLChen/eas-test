@@ -1,4 +1,4 @@
-import { EAS, Offchain, SchemaEncoder, SchemaRegistry, ZERO_ADDRESS } from "@ethereum-attestation-service/eas-sdk";
+import { EAS, Offchain, SchemaEncoder, SchemaRegistry, ZERO_ADDRESS, getSchemaUID } from "@ethereum-attestation-service/eas-sdk";
 import { ethers } from 'ethers';
 import dotenv from 'dotenv';
 
@@ -30,20 +30,32 @@ const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 schemaRegistry.connect(signer);
 
 // if error, check if schema is already registered
-const schema = 'uint256 eventId, uint8 voteIndex, uint8 voteValue, uint256 timeStamp';
+const schema = 'uint256 eventId, uint8 voteIndex, uint8 voteValue, uint256 timeStamp55555555';
 // const resolverAddress = '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0'; // Sepolia 0.26
 const resolverAddress = ZERO_ADDRESS;
 const revocable = false;
 
-const transaction = await schemaRegistry.register({
-  schema,
-  resolverAddress,
-  revocable
-});
+async function registerSchema(schema, resolverAddress, revocable) {
+    try {
+      const transaction = await schemaRegistry.register({
+        schema,
+        resolverAddress,
+        revocable
+      });
+  
+      // Optional: Wait for transaction to be validated
+      const schemaUID = await transaction.wait();
+      
+      // another way to get UID
+      // const schemaUID = getSchemaUID(schema, resolverAddress, revocable);
 
-// Optional: Wait for transaction to be validated
-const receipt = await transaction.wait();
-console.log('Transaction receipt:', receipt);
+      console.log('Transaction hash:', transaction.receipt.hash);
 
-// // only for debugging, sensitive data
-// console.log('\n', transaction);
+      return schemaUID;
+    } catch (error) {
+      console.error('Error registering schema:', error);
+    }
+  }
+  
+  const schemaUID = await registerSchema(schema, resolverAddress, revocable);
+  console.log(`Schema registered successfully with UID: ${schemaUID}`);
