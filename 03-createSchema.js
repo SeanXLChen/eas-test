@@ -24,15 +24,16 @@ console.log("EAS SDK initialized and connected to provider.");
 
 
 const schemaRegistryContractAddress = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0"; // Sepolia 0.26
-// const schemaRegistryContractAddress = '0xYourSchemaRegistryContractAddress';
+
 const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 
 schemaRegistry.connect(signer);
 
-const schema = 'uint256 eventId, uint8 voteIndex';
+// if error, check if schema is already registered
+const schema = 'uint256 eventId, uint8 voteIndex, uint8 voteValue, uint256 timetamp';
 // const resolverAddress = '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0'; // Sepolia 0.26
 const resolverAddress = ZERO_ADDRESS;
-const revocable = true;
+const revocable = false;
 
 const transaction = await schemaRegistry.register({
   schema,
@@ -42,3 +43,4 @@ const transaction = await schemaRegistry.register({
 
 // Optional: Wait for transaction to be validated
 await transaction.wait();
+console.log('Transaction receipt:', receipt);
