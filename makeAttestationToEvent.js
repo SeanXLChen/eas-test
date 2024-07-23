@@ -1,4 +1,4 @@
-import { EAS, Offchain, SchemaEncoder, SchemaRegistry } from "@ethereum-attestation-service/eas-sdk";
+import { EAS, Offchain, SchemaEncoder, SchemaRegistry, ZERO_ADDRESS } from "@ethereum-attestation-service/eas-sdk";
 import { ethers } from 'ethers';
 import dotenv from 'dotenv';
 
@@ -30,23 +30,24 @@ console.log("EAS SDK initialized and connected to provider.");
 // ### createAttestation ###
 
 // Initialize SchemaEncoder with the schema string
-const schemaEncoder = new SchemaEncoder('uint256 eventId, string eventName, string eventDate, string eventLocation, string registrationDeadline, uint256 ticketQuantity');
+const schemaEncoder = new SchemaEncoder('uint256 eventId, string eventName, string eventDate, string eventLocation, string registrationDeadline, uint256 ticketQuantity, string imageURI');
 
 const encodedData = schemaEncoder.encodeData([
-  { name: 'eventId', value: 123456789, type: 'uint256' },
-  { name: 'eventName', value: 'EAS Test Event', type: 'string' },
-  { name: 'eventDate', value: '2022-01-01', type: 'string' },
-  { name: 'eventLocation', value: 'EAS Test Location', type: 'string' },
-  { name: 'registrationDeadline', value: '2021-12-31', type: 'string' },
-  { name: 'ticketQuantity', value: 100, type: 'uint256' }
+  { name: 'eventId', value: 1, type: 'uint256' },
+  { name: 'eventName', value: 'EAS Test Event 01', type: 'string' },
+  { name: 'eventDate', value: '2025-01-01', type: 'string' },
+  { name: 'eventLocation', value: 'Vancouver', type: 'string' },
+  { name: 'registrationDeadline', value: '2024-08-01', type: 'string' },
+  { name: 'ticketQuantity', value: 200, type: 'uint256' },
+  { name: 'imageURI', value: 'ipfs://QmS4wrgKGHKtJAt3rgjuH3vKvC5CFLHoQHXxFc179fFyZN', type: 'string' }
 ]);
 
-const schemaUID = '0x039589f120eac2d0be07b3205e4f7fff0a4f996b1de2fe0255cf86953a0a994d';
+const schemaUID = '0xe065129fb26ee61dc9004af8cad19606ac8b39bf96580538142137554daa7220';
 
 const transaction = await eas.attest({
   schema: schemaUID,
   data: {
-    recipient: '0xeF24C0343c04EebAf35b882131F3F1CD65523138',
+    recipient: ZERO_ADDRESS,
     expirationTime: 0,
     revocable: false, // Be aware that if your schema is not revocable, this MUST be false
     data: encodedData

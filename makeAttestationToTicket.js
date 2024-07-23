@@ -39,7 +39,7 @@ const encodedData = schemaEncoder.encodeData([
   { name: 'owner', value: '0x97B7a36A4f593f9c5398128B8C95b5C73730b58C', type: 'address' }
 ]);
 
-const schemaUID = '0xb0b0bb9432b6b8ea22f4ae12baac4881d80e93a35abc6b032e19b4297916a418';
+const schemaUID = '0xf266782f6c7460bf15d6f0b03425b50b312bd531f9ab233bb92facc66a984b18';
 
 const transaction = await eas.attest({
   schema: schemaUID,

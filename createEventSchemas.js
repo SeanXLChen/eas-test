@@ -32,7 +32,7 @@ schemaRegistry.connect(signer);
 
 // const resolverAddress = '0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0'; // Sepolia 0.26
 const resolverAddress = ZERO_ADDRESS;
-const revocable = false;
+const revocable = true;
 
 async function registerSchema(schema, resolverAddress, revocable) {
     try {
@@ -56,9 +56,9 @@ async function registerSchema(schema, resolverAddress, revocable) {
     }
   }
 
-  const eventSchema = "uint256 eventId, string eventName, string eventDate, string eventLocation, string registrationDeadline, uint256 ticketQuantity";
+  const eventSchema = "uint256 eventId, string eventName, string eventDate, string eventLocation, string registrationDeadline, uint256 ticketQuantity, string imageURI";
   
-  const ticketSchema = "uint256 ticketId, uint256 eventId, string seatNumber, address owner";
+  const ticketSchema = "uint256 ticketId, uint256 eventId, string seatNumber, string imageURI";
 
   
   const eventUID = await registerSchema(eventSchema, resolverAddress, revocable);
